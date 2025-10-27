@@ -1,0 +1,22 @@
+{
+  "name": "flairsplaywright",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "clean:reports": "rimraf cucumber/report/",
+    "pretest": "npm run clean:reports",
+    "test": "npx cucumber-js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@cucumber/cucumber": "^10.9.0",
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.9.1",
+    "mkdirp": "^3.0.1",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2"
+  }
+}
