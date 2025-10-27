@@ -26,9 +26,6 @@ Feature: E2E Testing
 
     @api
     Scenario Outline: API Test for Candidate Management
-        # Given user navigates to "https://opensource-demo.orangehrmlive.com/"
-        # When user enters username "Admin" and password "admin123"
-        # And user clicks on the login button
         When user logins via API with username "Admin" and password "admin123"
         And user adds a candidate via API with the following details:
             | First Name     | <firstName>     |
