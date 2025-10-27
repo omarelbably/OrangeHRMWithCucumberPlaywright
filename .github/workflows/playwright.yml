@@ -19,6 +19,9 @@ jobs:
     - name: Cache and Install Playwright Browsers
       uses: ./.github/actions/cache-playwright-browsers
 
+    - name: Install Cucumber Dependencies
+      run: npm install @cucumber/cucumber
+      
     - name: Run Cucumber Tests
       run: npm run test
 
