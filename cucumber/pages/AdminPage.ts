@@ -35,7 +35,7 @@ export class AdminPage extends BasePage {
         }
         if (await this.page.locator(this.totalRecordsLocator).count() === 0 || null) {
             console.warn('No records found on the Admin Page.');
-            await this.page.waitForTimeout(2000); // Wait for 2 seconds before retrying
+            await this.page.waitForTimeout(2000);
             console.info('Retrying to fetch total records count...');
             console.info(`Total Records Found after retry: ${await this.page.locator(this.totalRecordsLocator).count()}`);
             return await this.page.locator(this.totalRecordsLocator).count();

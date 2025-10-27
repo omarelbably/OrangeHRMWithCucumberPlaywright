@@ -20,8 +20,11 @@ jobs:
       uses: ./.github/actions/cache-playwright-browsers
 
     - name: Install Cucumber Dependencies
-      run: npm install @cucumber/cucumber
-      
+      run: npm install -D @cucumber/cucumber
+
+    - name: Install rimraf Dependencies
+      run: npm install -D rimraf
+
     - name: Run Cucumber Tests
       run: npm run test
 

@@ -1,17 +1,13 @@
 import { Page, APIRequestContext } from '@playwright/test';
 import { BasePage } from '../BasePage';
 
-export class ApiPage extends BasePage{
+export class ApiPage extends BasePage {
     private baseURL: string;
     constructor(page: Page, baseURL: string = 'https://opensource-demo.orangehrmlive.com') {
         super(page);
         this.baseURL = baseURL;
     }
 
-    /**
-     * Authenticate via UI to establish session
-     * This automatically sets up cookies for API calls
-     */
     async authenticateViaUI(username: string, password: string): Promise<void> {
         try {
             await this.page.goto(`${this.baseURL}/web/index.php/auth/login`);
@@ -19,7 +15,7 @@ export class ApiPage extends BasePage{
             await this.page.fill('input[name="password"]', password);
             await this.page.click('button[type="submit"]');
             await this.page.waitForLoadState('networkidle');
-            
+
             console.log('Authentication successful - cookies are now available for API calls');
         } catch (error: any) {
             console.error('Authentication failed:', error.message);
@@ -27,9 +23,6 @@ export class ApiPage extends BasePage{
         }
     }
 
-    /**
-     * Add a candidate through API
-     */
     async addCandidate(candidateData: {
         firstName: string;
         middleName?: string;
@@ -76,9 +69,6 @@ export class ApiPage extends BasePage{
         }
     }
 
-    /**
-     * Get all candidates
-     */
     async getCandidates(): Promise<any> {
         try {
             const response = await this.request.get(
@@ -106,9 +96,6 @@ export class ApiPage extends BasePage{
         }
     }
 
-    /**
-     * Delete a candidate by ID
-     */
     async deleteCandidate(candidateId: number | string): Promise<void> {
         try {
             const response = await this.request.delete(
@@ -137,9 +124,6 @@ export class ApiPage extends BasePage{
         }
     }
 
-    /**
-     * Delete multiple candidates by IDs
-     */
     async deleteCandidates(candidateIds: number[]): Promise<void> {
         try {
             const response = await this.request.delete(
@@ -168,24 +152,21 @@ export class ApiPage extends BasePage{
         }
     }
 
-    /**
-     * Find candidate by name
-     */
     async findCandidateByName(firstName: string, lastName: string): Promise<any> {
         try {
             const candidates = await this.getCandidates();
-            
+
             if (candidates && candidates.data) {
-                const found = candidates.data.find((candidate: any) => 
+                const found = candidates.data.find((candidate: any) =>
                     candidate.firstName === firstName && candidate.lastName === lastName
                 );
-                
+
                 if (found) {
                     console.log('Candidate found:', found);
                     return found;
                 }
             }
-            
+
             console.log('Candidate not found');
             return null;
         } catch (error: any) {

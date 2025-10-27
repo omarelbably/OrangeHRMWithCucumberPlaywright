@@ -24,16 +24,9 @@ export class AddEmployeePage extends BasePage {
         this.cancelButton = 'button.oxd-button--ghost';
     }
 
-    /**
-     * Select user role from dropdown
-     * @param role - The role to select (e.g., "Admin", "ESS")
-     */
     async selectUserRole(role: string): Promise<void> {
-        // Click on the first dropdown (User Role)
         await this.page.locator(this.userRoleDropdown).first().click();
         await this.wait(500);
-        
-        // Check if the option exists with a short timeout
         const optionLocator = this.page.getByRole('option', { name: role });
         const exists = await optionLocator.count() > 0;
         
@@ -45,41 +38,24 @@ export class AddEmployeePage extends BasePage {
         }
     }
 
-
-    /**
-     * Enter employee name in autocomplete field
-     * @param employeeName - The employee name to type
-     */
     async enterEmployeeName(employeeName: string): Promise<void> {
         await this.fill(this.employeeNameInput, employeeName);
-        
-        // Dynamically wait for autocomplete dropdown to appear
         await this.page.waitForSelector('[role="listbox"]', { 
             state: 'visible', 
             timeout: 10000 
         });
-        
-        // Wait for options to load (not "Searching....")
         await this.page.waitForSelector('[role="option"]:not(:has-text("Searching"))', {
             state: 'visible',
             timeout: 10000
         });
-        
-        // Select the first suggestion
         await this.page.keyboard.press('ArrowDown');
         await this.page.keyboard.press('Enter');
     }
 
-    /**
-     * Select status from dropdown
-     * @param status - The status to select (e.g., "Enabled", "Disabled")
-     */
     async selectStatus(status: string): Promise<void> {
-        // Click on the second dropdown (Status)
         await this.page.locator(this.userRoleDropdown).nth(1).click();
         await this.wait(500);
         
-        // Check if the option exists with a short timeout
         const optionLocator = this.page.getByRole('option', { name: status });
         const exists = await optionLocator.count() > 0;
         
@@ -92,31 +68,15 @@ export class AddEmployeePage extends BasePage {
         }
     }
 
-    /**
-     * Enter username
-     * @param username - The username to enter
-     */
     async enterUsername(username: string): Promise<void> {
-        // Find the username input (it's after the Employee Name field)
         const usernameInputs = this.page.locator(this.usernameInput);
         await usernameInputs.nth(1).fill(username);
     }
 
-    /**
-     * Enter password
-     * @param password - The password to enter
-     */
     async enterPassword(password: string): Promise<void> {
-        // Fill the first password input
         await this.page.locator(this.passwordInput).first().fill(password);
     }
-
-    /**
-     * Enter confirm password
-     * @param password - The password to confirm
-     */
     async enterConfirmPassword(password: string): Promise<void> {
-        // Fill the second password input
         await this.page.locator(this.passwordInput).nth(1).fill(password);
     }
 
@@ -143,17 +103,11 @@ export class AddEmployeePage extends BasePage {
         await this.enterConfirmPassword(password);
     }
 
-    /**
-     * Click the Save button
-     */
     async clickSaveButton(): Promise<void> {
         await this.clickAndWaitForNavigation(this.saveButton);
         await this.wait(2000);
     }
 
-    /**
-     * Click the Cancel button
-     */
     async clickCancelButton(): Promise<void> {
         await this.page.locator(this.cancelButton).click();
     }

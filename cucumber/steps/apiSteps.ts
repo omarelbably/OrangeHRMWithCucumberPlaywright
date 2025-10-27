@@ -13,8 +13,6 @@ When('user logins via API with username {string} and password {string}', async f
 
 When('user adds a candidate via API with the following details:', async function (dataTable: any) {
     const data = dataTable.rowsHash();
-    // apiPage = new ApiPage(this.page);
-
     const candidate = {
         firstName: data['First Name'],
         middleName: data['Middle Name'] || '',

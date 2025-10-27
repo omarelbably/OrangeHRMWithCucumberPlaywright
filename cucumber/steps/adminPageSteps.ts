@@ -2,6 +2,7 @@ import { Given, When, Then } from '@cucumber/cucumber';
 import { AdminPage } from '../pages/AdminPage';
 import { BasePage } from '../pages/BasePage';
 import { expect } from '@playwright/test';
+import { time } from 'console';
 
 let adminPage: AdminPage;
 
@@ -16,7 +17,7 @@ When('user clicks on add employee button', async function () {
 });
 
 Then('verify that the new record is increased by 1 or more', async function () {
-    await this.page.waitForURL("https://opensource-demo.orangehrmlive.com/web/index.php/admin/viewSystemUsers");
+    await this.page.waitForURL("https://opensource-demo.orangehrmlive.com/web/index.php/admin/viewSystemUsers", {timeout: 300*1000});
     const newRecordsCount = await adminPage.getTotalRecordsCount();
     console.log(`New Total Records Found: ${newRecordsCount}`);
     if (newRecordsCount !== BasePage.recordsCount + 1) {
@@ -41,6 +42,7 @@ When('user deletes the employee record', async function () {
 
 Then('verify that the new record is decreased by 1 or more', async function () {
     await adminPage.clickOnResetSearchButton();
+    await this.page.waitForTimeout(5000);
     const newRecordsCount = await adminPage.getTotalRecordsCount();
     if (newRecordsCount !== BasePage.recordsCount) {
         console.error(`Expected ${BasePage.recordsCount} records, but found ${newRecordsCount}`);
