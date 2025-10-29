@@ -8,6 +8,48 @@ export class ApiPage extends BasePage {
         this.baseURL = baseURL;
     }
 
+    async authenticateViaAPI(username: string, password: string): Promise<void> {
+        // Step 1: Get CSRF token from the login page
+        const loginPageResp = await this.request.get(`${this.baseURL}/web/index.php/auth/login`);
+        if (!loginPageResp.ok()) {
+            throw new Error(`Failed to load login page: ${loginPageResp.status()} ${loginPageResp.statusText()}`);
+        }
+
+        const html = await loginPageResp.text();
+
+        const tokenMatch = html.match(/:token=\"&quot;([^\"]+)&quot;\"/);
+        const csrfToken = tokenMatch?.[1];
+
+        if (!csrfToken) {
+            throw new Error('CSRF token not found on login page');
+        }
+
+        const loginResp = await this.request.post(
+            `${this.baseURL}/web/index.php/auth/validate`,
+            {
+                form: {
+                    _token: csrfToken,
+                    username,
+                    password,
+                },
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            }
+        );
+
+        const status = loginResp.status();
+        if (![200, 302].includes(status)) {
+            const body = await loginResp.text();
+            throw new Error(`API login failed: ${status} ${loginResp.statusText()} - ${body}`);
+        }
+
+        const verifyResp = await this.request.get(`${this.baseURL}/web/index.php/dashboard/index`);
+        if (!verifyResp.ok()) {
+            throw new Error(`Login verification failed: ${verifyResp.status()} ${verifyResp.statusText()}`);
+        }
+
+        await this.page.goto(`${this.baseURL}/web/index.php/dashboard/index`);
+    }
+
     async authenticateViaUI(username: string, password: string): Promise<void> {
         try {
             await this.page.goto(`${this.baseURL}/web/index.php/auth/login`);

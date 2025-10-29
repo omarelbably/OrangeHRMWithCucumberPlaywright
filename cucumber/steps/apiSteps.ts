@@ -8,7 +8,7 @@ let candidateData: any;
 
 When('user logins via API with username {string} and password {string}', async function (username: string, password: string) {
     apiPage = new ApiPage(this.page);
-    await apiPage.authenticateViaUI(username, password);
+    await apiPage.authenticateViaAPI(username, password);
 });
 
 When('user adds a candidate via API with the following details:', async function (dataTable: any) {
