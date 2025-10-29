@@ -1,6 +1,6 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
-import { ApiPage } from '../pages/Api/ApiPage';
+import { ApiPage } from '../../pages/Api/CandidateModule';
 
 let apiPage: ApiPage;
 let candidateId: number;

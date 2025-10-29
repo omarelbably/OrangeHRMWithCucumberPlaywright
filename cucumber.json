@@ -4,7 +4,7 @@
         "formatOptions":{
             "snippetInterface":"async-await"
         },
-        "require":["cucumber/steps/*.ts", "cucumber/hooks/hooks.ts"],
+        "require":["cucumber/steps/*.ts", "cucumber/steps/**/*.ts", "cucumber/hooks/hooks.ts"],
         "requireModule":["ts-node/register"],
         "parallel":1,
         "retry":0,
